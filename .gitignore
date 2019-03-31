@@ -1,1 +1,6 @@
-./goboil
+
+*.exe
+*.test
+*.prof
+
+goboil
