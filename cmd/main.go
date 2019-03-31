@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
   "flag"
@@ -8,7 +8,7 @@ import (
   "os/exec"
 )
 
-func main()  {
+func Exec()  {
   modPtr := flag.Bool("mod", false, "a boolean for Go module support")
   flag.Parse()
 
