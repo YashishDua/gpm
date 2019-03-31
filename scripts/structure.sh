@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set +e
 
 mkdir -p cmd && touch $PWD/cmd/.keep
 mkdir -p internal && touch $PWD/internal/.keep
