@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-set +e
 
 echo "Initializing Go modules.."
-GO111MODULE=on go mod init $1
+file="go.mod"
+if [ -f "$file" ]
+then
+	echo "$file already present."
+else
+	GO111MODULE=on go mod init $1
+fi
