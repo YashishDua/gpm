@@ -1,16 +1,32 @@
 package cmd
 
 import (
-  "flag"
+  "fmt"
+  "goboil/internal"
 )
 
-func Exec()  {
-  modPtr := flag.Bool("mod", false, "a boolean for Go module support")
-  flag.Parse()
+func Exec(args []string, modPtr *bool) {
+  isFileExist, _ := internal.CheckFileExist(".goboil")
 
-  SetupProject()
+  if (args[1] == "init") {
+    if (isFileExist) {
+      fmt.Println("Goboil already initialized..")
+      return
+    }
+    Init()
+  }
 
-  if (*modPtr) {
-    SetupMod()
+  // For any other Command, .goboil must be present
+  if (!isFileExist) {
+    fmt.Println("Goboil not initialized..")
+    return
+  }
+
+  if (args[1] == "create") {
+    SetupProject()
+
+    if (*modPtr) {
+      SetupMod()
+    }
   }
 }
