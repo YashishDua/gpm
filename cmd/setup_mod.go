@@ -5,7 +5,6 @@ import (
   "bufio"
   "os"
   "os/exec"
-  "strings"
 
   "goboil/internal"
 )
@@ -23,12 +22,13 @@ func SetupMod() {
   modScript := fmt.Sprintf(`go mod init %s`, text)
 
   // Check if inside GOPATH
-  dir, err := os.Getwd()
+  dir, err := internal.GetCurrentDir()
 	if err != nil {
 		fmt.Println(err)
+    return
 	}
 
-  insideGoPath := strings.Contains(dir, os.Getenv("GOPATH"))
+  insideGoPath := internal.CheckInsideGoPath(dir)
   if (insideGoPath) {
     modScript = fmt.Sprintf(`GO111MODULE=on %s`, modScript)
   }

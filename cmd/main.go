@@ -2,7 +2,7 @@ package cmd
 
 import (
   "fmt"
-  
+
   "goboil/internal"
 )
 
@@ -12,6 +12,7 @@ func Exec(args []string, modPtr *bool) {
   if (args[1] == "init") {
     if (isFileExist) {
       fmt.Println("Goboil already initialized..")
+      return
     }
     Init()
     return
@@ -34,6 +35,11 @@ func Exec(args []string, modPtr *bool) {
 
   if (args[1] == "mod") {
     SetupMod()
+    return
+  }
+
+  if (args[1] == "build") {
+    Build()
     return
   }
 

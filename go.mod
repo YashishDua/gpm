@@ -1,1 +1,1 @@
-module github.com/yashishdua/goboil
+module goboil

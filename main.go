@@ -17,5 +17,4 @@ func main() {
   flag.Parse()
 
   cmd.Exec(args, modPtr)
-
 }
