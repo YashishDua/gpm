@@ -5,10 +5,13 @@ import (
   "os/exec"
 )
 
+var initScript string = `mkdir -p .goboil`
+
 func Init()  {
   fmt.Println("Init...")
-  _, err := exec.Command("sh", "./scripts/init.sh").Output()
+  
+  _, err := exec.Command("/bin/sh", "-c", initScript).Output()
   if err != nil {
-      fmt.Println(err)
+    fmt.Println(err)
   }
 }
