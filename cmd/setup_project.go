@@ -11,6 +11,7 @@ import (
 var dirs = []string{"cmd", "internal", "pkg", "scripts", "api", "test"}
 
 func SetupProject() {
+  fmt.Println("Creating project structure...")
   for _, dir := range dirs {
     execSetupScript(dir)
   }

@@ -5,23 +5,36 @@ import (
   "bufio"
   "os"
   "os/exec"
+  "strings"
+
+  "goboil/internal"
 )
 
 func SetupMod() {
-  if _, err := os.Stat("./go.mod"); err == nil {
-    // path/to/whatever exists
-    fmt.Println("Go mod exist")
+  isFileExist, _ := internal.CheckFileExist("go.mod")
+  if (isFileExist) {
+    fmt.Println("mod file already exist")
     return
-  } else if os.IsNotExist(err) {
-    // path/to/whatever does *not* exist
-    fmt.Println("Go mod does not exist")
   }
+
   reader := bufio.NewReader(os.Stdin)
   fmt.Print("Enter module name (github.com/username/repo): ")
   text, _ := reader.ReadString('\n')
-  out, err := exec.Command("sh", "./scripts/mod.sh", text).Output()
+  modScript := fmt.Sprintf(`go mod init %s`, text)
+
+  // Check if inside GOPATH
+  dir, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+  insideGoPath := strings.Contains(dir, os.Getenv("GOPATH"))
+  if (insideGoPath) {
+    modScript = fmt.Sprintf(`GO111MODULE=on %s`, modScript)
+  }
+
+  _, err = exec.Command("/bin/sh", "-c", modScript).Output()
   if err != nil {
       fmt.Println(err)
   }
-  fmt.Println(string(out))
 }
