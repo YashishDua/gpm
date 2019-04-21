@@ -2,6 +2,7 @@ package internal
 
 import (
   "os"
+  "os/exec"
   "errors"
   "strings"
 )
@@ -27,4 +28,13 @@ func GetCurrentDir() (string, error) {
 
 func CheckInsideGoPath(dir string) bool {
   return strings.Contains(dir, os.Getenv("GOPATH"))
+}
+
+func CheckGoVersion() (string, error) {
+  out, err := exec.Command("/bin/sh", "-c", "go version").Output()
+  if err != nil {
+      return "", err
+  }
+  words := strings.Fields(string(out))
+  return words[2], nil
 }

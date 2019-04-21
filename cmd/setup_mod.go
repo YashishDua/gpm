@@ -22,9 +22,9 @@ func SetupMod() {
   modScript := fmt.Sprintf(`go mod init %s`, text)
 
   // Check if inside GOPATH
-  dir, err := internal.GetCurrentDir()
-	if err != nil {
-		fmt.Println(err)
+  dir, dirErr := internal.GetCurrentDir()
+	if dirErr != nil {
+		fmt.Println(dirErr)
     return
 	}
 
@@ -33,8 +33,8 @@ func SetupMod() {
     modScript = fmt.Sprintf(`GO111MODULE=on %s`, modScript)
   }
 
-  _, err = exec.Command("/bin/sh", "-c", modScript).Output()
-  if err != nil {
-      fmt.Println(err)
+  _, scriptErr := exec.Command("/bin/sh", "-c", modScript).Output()
+  if scriptErr != nil {
+    fmt.Println(scriptErr)
   }
 }
