@@ -13,8 +13,9 @@ func main() {
     return
   }
 
-  modPtr := flag.Bool("mod", false, "a boolean for Go module support")
+  vendorPtr := flag.Bool("vendor", false, "a boolean for using vendor while build")
+  modPtr := flag.Bool("mod", false, "a boolean for using mod file while build")
   flag.Parse()
 
-  cmd.Exec(args, modPtr)
+  cmd.Exec(args, vendorPtr, modPtr)
 }

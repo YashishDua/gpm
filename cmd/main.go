@@ -6,7 +6,7 @@ import (
   "goboil/internal"
 )
 
-func Exec(args []string, modPtr *bool) {
+func Exec(args []string, vendorPtr *bool, modPtr *bool) {
   isFileExist, _ := internal.CheckFileExist(".goboil")
 
   if (args[1] == "init") {
@@ -14,6 +14,7 @@ func Exec(args []string, modPtr *bool) {
       fmt.Println("Goboil already initialized..")
       return
     }
+    fmt.Println("Initializing goboil..")
     Init()
     return
   }
@@ -25,26 +26,26 @@ func Exec(args []string, modPtr *bool) {
   }
 
   if (args[1] == "create") {
+    fmt.Println("Setting up project structure..")
     SetupProject()
-
-    if (*modPtr) {
-      fmt.Println("Flag inserted..")
-    }
     return
   }
 
   if (args[1] == "mod") {
+    fmt.Println("Creating mod file..")
     SetupMod()
     return
   }
 
   if (args[1] == "build") {
-    Build()
+    fmt.Println("Building..")
+    Build(vendorPtr, modPtr)
     return
   }
 
   if (args[1] == "vendor") {
-    fmt.Println("Adding vendor support..")
+    fmt.Println("Creating vendor..")
+    SetupVendor()
     return
   }
 }
