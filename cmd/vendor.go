@@ -1,7 +1,6 @@
 package cmd
 
 import (
-  "os/exec"
   "fmt"
 
   "goboil/internal"
@@ -17,13 +16,11 @@ func SetupVendor() {
     return
   }
 
-  insideGoPath := internal.CheckInsideGoPath(dir)
-  if (insideGoPath) {
+  if insideGoPath := internal.CheckInsideGoPath(dir); insideGoPath {
     vendorScript = fmt.Sprintf(`GO111MODULE=on %s`, vendorScript)
   }
 
-  _, scriptErr := exec.Command("/bin/sh", "-c", vendorScript).Output()
-  if scriptErr != nil {
+  if scriptErr := internal.ConfigureScript(vendorScript).Run(); scriptErr != nil {
     fmt.Println(scriptErr)
   }
 }

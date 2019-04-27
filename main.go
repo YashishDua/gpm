@@ -2,8 +2,10 @@ package main
 
 import (
   "os"
-  "flag"
+  "strings"
+
   cmd "goboil/cmd"
+  internal "goboil/internal"
 )
 
 func main() {
@@ -13,9 +15,23 @@ func main() {
     return
   }
 
-  vendorPtr := flag.Bool("vendor", false, "a boolean for using vendor while build")
-  modPtr := flag.Bool("mod", false, "a boolean for using mod file while build")
-  flag.Parse()
+  flags := internal.Flags{}
 
-  cmd.Exec(args, vendorPtr, modPtr)
+  for _, arg := range args {
+    if (strings.Contains(arg, "-")) {
+      s := strings.Split(arg, "=")
+
+      if (s[0] == "-vendor") {
+        flags.Vendor = true
+      } else
+      if (s[0] == "-mod") {
+        flags.Mod = true
+      } else
+      if (s[0] == "-path") {
+        flags.Path = s[1]
+      }
+    }
+  }
+
+  cmd.Exec(args, flags)
 }

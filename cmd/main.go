@@ -6,46 +6,48 @@ import (
   "goboil/internal"
 )
 
-func Exec(args []string, vendorPtr *bool, modPtr *bool) {
+func Exec(args []string, flags internal.Flags) {
   isFileExist, _ := internal.CheckFileExist(".goboil")
+  command := args[1]
 
-  if (args[1] == "init") {
-    if (isFileExist) {
+  if command == "init" {
+    if isFileExist {
       fmt.Println("Goboil already initialized..")
-      return
+    } else {
+      fmt.Println("Initializing goboil..")
+      Init()
     }
-    fmt.Println("Initializing goboil..")
-    Init()
     return
   }
 
   // For any other Command, .goboil must be present
-  if (!isFileExist) {
+  if !isFileExist {
     fmt.Println("Goboil not initialized..")
     return
   }
 
-  if (args[1] == "create") {
+  switch command {
+  case "create":
     fmt.Println("Setting up project structure..")
     SetupProject()
-    return
-  }
 
-  if (args[1] == "mod") {
+  case "mod":
     fmt.Println("Creating mod file..")
     SetupMod()
-    return
-  }
 
-  if (args[1] == "build") {
+  case "build":
     fmt.Println("Building..")
-    Build(vendorPtr, modPtr)
-    return
-  }
+    Build(flags.Vendor, flags.Mod)
 
-  if (args[1] == "vendor") {
+  case "vendor":
     fmt.Println("Creating vendor..")
     SetupVendor()
-    return
+
+  case "update":
+    fmt.Println("Updating Go version..")
+    UpdateVersion(flags.Path)
+
+  default:
+    fmt.Println("No such command. Use help to see all available commands.")
   }
 }

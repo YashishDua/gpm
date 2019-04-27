@@ -7,11 +7,10 @@ import (
   "goboil/internal"
 )
 
-func Build(vendorPtr *bool, modPtr *bool) {
-  var buildScript = `go build`
-  
-  isFileExist, _ := internal.CheckFileExist("go.mod")
-  if (isFileExist) {
+func Build(vendorFlag bool, modFlag bool) {
+  buildScript := `go build`
+
+  if isFileExist, _ := internal.CheckFileExist("go.mod"); isFileExist {
     // Check if inside GOPATH
     dir, dirErr := internal.GetCurrentDir()
     if dirErr != nil {
@@ -19,21 +18,21 @@ func Build(vendorPtr *bool, modPtr *bool) {
       return
     }
 
-    insideGoPath := internal.CheckInsideGoPath(dir)
-    if (insideGoPath) {
-      if (*modPtr) {
+    if insideGoPath := internal.CheckInsideGoPath(dir); insideGoPath {
+      if (modFlag) {
         fmt.Println("Using mod file to build..")
         buildScript = fmt.Sprintf(`GO111MODULE=on %s`, buildScript)
       } else
-      if (*vendorPtr) {
+      if (vendorFlag) {
         fmt.Println("Using vendor to build..")
         buildScript = fmt.Sprintf(`GO111MODULE=on %s -mod=vendor`, buildScript)
       }
     } // Takes mod file if outside GOPATH
   }
 
-  _, scriptErr := exec.Command("/bin/sh", "-c", buildScript).Output()
+  out, scriptErr := exec.Command("/bin/sh", "-c", buildScript).Output()
   if scriptErr != nil {
     fmt.Println(scriptErr)
   }
+  fmt.Println(string(out))
 }
