@@ -47,6 +47,9 @@ func Exec(args []string, flags internal.Flags) {
     fmt.Println("Updating Go version..")
     UpdateVersion(flags.Path)
 
+  case "help":
+    Help()
+
   default:
     fmt.Println("No such command. Use help to see all available commands.")
   }
