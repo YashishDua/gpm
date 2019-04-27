@@ -5,7 +5,7 @@ import (
   "bufio"
   "os"
 
-  "goboil/internal"
+  "gpm/internal"
 )
 
 func SetupMod() {

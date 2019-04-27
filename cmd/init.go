@@ -3,11 +3,11 @@ package cmd
 import (
   "fmt"
 
-  "goboil/internal"
+  "gpm/internal"
 )
 
 func Init()  {
-  initScript := `mkdir -p .goboil`
+  initScript := `mkdir -p .gpm`
   if scriptErr := internal.ConfigureScript(initScript).Run(); scriptErr != nil {
     fmt.Println(scriptErr)
   }

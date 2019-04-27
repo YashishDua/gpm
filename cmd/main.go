@@ -3,16 +3,16 @@ package cmd
 import (
   "fmt"
 
-  "goboil/internal"
+  "gpm/internal"
 )
 
 func Exec(args []string, flags internal.Flags) {
-  isFileExist, _ := internal.CheckFileExist(".goboil")
+  isFileExist, _ := internal.CheckFileExist(".gpm")
   command := args[1]
 
   if command == "init" {
     if isFileExist {
-      fmt.Println("Goboil already initialized..")
+      fmt.Println("gpm already initialized..")
     } else {
       fmt.Println("Initializing goboil..")
       Init()
@@ -20,9 +20,14 @@ func Exec(args []string, flags internal.Flags) {
     return
   }
 
+  if command == "help" {
+    Help()
+    return
+  }
+
   // For any other Command, .goboil must be present
   if !isFileExist {
-    fmt.Println("Goboil not initialized..")
+    fmt.Println("gpm not initialized..")
     return
   }
 
@@ -46,9 +51,6 @@ func Exec(args []string, flags internal.Flags) {
   case "update":
     fmt.Println("Updating Go version..")
     UpdateVersion(flags.Path)
-
-  case "help":
-    Help()
 
   default:
     fmt.Println("No such command. Use help to see all available commands.")

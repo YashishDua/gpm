@@ -4,7 +4,7 @@ import (
   "os/exec"
   "fmt"
 
-  "goboil/internal"
+  "gpm/internal"
 )
 
 func Build(vendorFlag bool, modFlag bool) {

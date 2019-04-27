@@ -4,8 +4,8 @@ import (
   "os"
   "strings"
 
-  cmd "goboil/cmd"
-  internal "goboil/internal"
+  cmd "gpm/cmd"
+  internal "gpm/internal"
 )
 
 func main() {

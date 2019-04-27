@@ -3,8 +3,8 @@ package cmd
 import (
   "fmt"
   "os"
-  
-  "goboil/internal"
+
+  "gpm/internal"
 )
 
 func UpdateVersion(pathFlag string) {

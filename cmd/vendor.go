@@ -3,7 +3,7 @@ package cmd
 import (
   "fmt"
 
-  "goboil/internal"
+  "gpm/internal"
 )
 
 func SetupVendor() {
