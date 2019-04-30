@@ -1,9 +1,9 @@
 package cmd
 
 import (
-  "fmt"
+  "gpm/pkg/logger"
 )
 
 func Help() {
-  fmt.Println("Print about all commands")
+  logger.PrintDescribe("help: Print about all commands")
 }

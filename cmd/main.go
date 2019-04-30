@@ -4,6 +4,7 @@ import (
   "fmt"
 
   "gpm/internal"
+  "gpm/pkg/logger"
 )
 
 func Exec(args []string, flags internal.Flags) {
@@ -11,10 +12,10 @@ func Exec(args []string, flags internal.Flags) {
   command := args[1]
 
   if command == "init" {
+    logger.PrintDescribe("Initializing gpm...")
     if isFileExist {
-      fmt.Println("gpm already initialized..")
+      logger.PrintStep("gpm already initialized")
     } else {
-      fmt.Println("Initializing goboil..")
       Init()
     }
     return
