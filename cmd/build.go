@@ -1,38 +1,58 @@
 package cmd
 
 import (
-  "os/exec"
   "fmt"
-
   "gpm/internal"
+  "gpm/pkg/logger"
 )
 
 func Build(vendorFlag bool, modFlag bool) {
+  buildScript := getBuildScript(vendorFlag, modFlag)
+  if buildScript == "" {
+    logger.PrintStep("Build failed")
+
+    return
+  }
+
+  if scriptErr := internal.ConfigureScript(buildScript).Run(); scriptErr != nil {
+    logger.PrintError(scriptErr)
+
+    return
+  }
+  logger.PrintStep("Build successful")
+}
+
+func getBuildScript(vendorFlag bool, modFlag bool) string {
   buildScript := `go build`
 
-  if isFileExist, _ := internal.CheckFileExist("go.mod"); isFileExist {
-    // Check if inside GOPATH
+  // Priority given to modules unless specified
+  if modExist, _ := internal.CheckFileExist("go.mod"); modExist {
     dir, dirErr := internal.GetCurrentDir()
     if dirErr != nil {
-      fmt.Println(dirErr)
-      return
+      logger.PrintError(dirErr)
+      return ""
     }
 
-    if insideGoPath := internal.CheckInsideGoPath(dir); insideGoPath {
+    if insideGoPath := internal.CheckInsideGoPath(dir); insideGoPath { // Inside GOPATH
       if (modFlag) {
-        fmt.Println("Using mod file to build..")
+        logger.PrintStep("Using modules to build inside GOPATH")
         buildScript = fmt.Sprintf(`GO111MODULE=on %s`, buildScript)
-      } else
+      }
+    } else { // Outside GOPATH
       if (vendorFlag) {
-        fmt.Println("Using vendor to build..")
+        logger.PrintStep("Using vendor to build inside GOPATH")
         buildScript = fmt.Sprintf(`GO111MODULE=on %s -mod=vendor`, buildScript)
       }
-    } // Takes mod file if outside GOPATH
+    }
+
+    return buildScript
   }
 
-  out, scriptErr := exec.Command("/bin/sh", "-c", buildScript).Output()
-  if scriptErr != nil {
-    fmt.Println(scriptErr)
+  if vendorExist, _ := internal.CheckFileExist("vendor"); vendorExist {
+    logger.PrintStep("Using vendor to build outside GOPATH")
+    return buildScript
   }
-  fmt.Println(string(out))
+
+  logger.PrintStep("No vendor or modules were present")
+  return ""
 }

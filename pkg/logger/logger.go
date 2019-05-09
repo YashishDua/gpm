@@ -6,10 +6,14 @@ import (
 )
 
 func PrintDescribe(text string) {
-  color.Blue("[ ] " + text)
+  text = fmt.Sprintf(`# %s`, text)
+  color.Black(text)
 }
 
 func PrintStep(text string) {
-  text = fmt.Sprintf(`    %s`, text)
-  fmt.Println(text)
+  color.Black(text)
+}
+
+func PrintError(err error) {
+  color.Red(err.Error())
 }

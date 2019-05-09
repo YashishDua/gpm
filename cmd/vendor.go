@@ -2,17 +2,16 @@ package cmd
 
 import (
   "fmt"
-
   "gpm/internal"
+  "gpm/pkg/logger"
 )
 
 func SetupVendor() {
   var vendorScript = `go mod vendor`
 
-  // Check if inside GOPATH
   dir, dirErr := internal.GetCurrentDir()
   if dirErr != nil {
-    fmt.Println(dirErr)
+    logger.PrintError(dirErr)
     return
   }
 
@@ -21,6 +20,9 @@ func SetupVendor() {
   }
 
   if scriptErr := internal.ConfigureScript(vendorScript).Run(); scriptErr != nil {
-    fmt.Println(scriptErr)
+    logger.PrintError(scriptErr)
+    return
   }
+
+  logger.PrintStep("Vendor created")
 }

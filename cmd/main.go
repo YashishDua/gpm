@@ -1,8 +1,6 @@
 package cmd
 
 import (
-  "fmt"
-
   "gpm/internal"
   "gpm/pkg/logger"
 )
@@ -12,48 +10,50 @@ func Exec(args []string, flags internal.Flags) {
   command := args[1]
 
   if command == "init" {
-    logger.PrintDescribe("Initializing gpm...")
     if isFileExist {
       logger.PrintStep("gpm already initialized")
     } else {
+      logger.PrintDescribe("Initializing gpm...")
       Init()
     }
     return
   }
 
   if command == "help" {
+    logger.PrintDescribe("Print about all commands...")
     Help()
     return
   }
 
   // For any other Command, .goboil must be present
   if !isFileExist {
-    fmt.Println("gpm not initialized..")
+    logger.PrintStep("gpm not initialized")
+    logger.PrintStep("Use <gpm init> to initialize the project")
     return
   }
 
   switch command {
   case "create":
-    fmt.Println("Setting up project structure..")
+    logger.PrintDescribe("Setting up project structure...")
     SetupProject()
 
   case "mod":
-    fmt.Println("Creating mod file..")
+    logger.PrintDescribe("Creating modules file...")
     SetupMod()
 
   case "build":
-    fmt.Println("Building..")
+    logger.PrintDescribe("Building...")
     Build(flags.Vendor, flags.Mod)
 
   case "vendor":
-    fmt.Println("Creating vendor..")
+    logger.PrintDescribe("Creating vendor...")
     SetupVendor()
 
   case "update":
-    fmt.Println("Updating Go version..")
+    logger.PrintDescribe("Updating Go version...")
     UpdateVersion(flags.Path)
 
   default:
-    fmt.Println("No such command. Use help to see all available commands.")
+    logger.PrintStep("No such command. Use help to see all available commands.")
   }
 }
