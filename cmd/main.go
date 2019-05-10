@@ -51,7 +51,7 @@ func Exec(args []string, flags internal.Flags) {
 
   case "update":
     logger.PrintDescribe("Updating Go version...")
-    UpdateVersion(flags.Path)
+    UpdateVersion(flags.Version)
 
   default:
     logger.PrintStep("No such command. Use help to see all available commands.")

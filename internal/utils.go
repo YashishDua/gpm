@@ -1,6 +1,8 @@
 package internal
 
 import (
+  "fmt"
+  "io"
   "os"
   "os/exec"
   "net/http"
@@ -60,4 +62,36 @@ func ConfigureScript(script string) *exec.Cmd {
   cmd.Stdout = os.Stdout
   cmd.Stderr = os.Stderr
   return cmd
+}
+
+func DownloadFile(filepath string, url string) error {
+  // Create the file
+  out, createErr := os.Create(filepath)
+  if createErr != nil  {
+    return createErr
+  }
+  fmt.Println("CREATED")
+  defer out.Close()
+
+  // Get the data
+  resp, httpErr := http.Get(url)
+  if httpErr != nil {
+    return httpErr
+  }
+  fmt.Println("HTTP")
+  defer resp.Body.Close()
+
+  // Check server response
+  if resp.StatusCode != http.StatusOK {
+    return fmt.Errorf("Bad status from golang.org: %s", resp.Status)
+  }
+
+  fmt.Println("COPYING")
+  // Writer the body to file
+  _, err := io.Copy(out, resp.Body)
+  if err != nil  {
+    return err
+  }
+
+  return nil
 }

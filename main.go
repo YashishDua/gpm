@@ -27,8 +27,8 @@ func main() {
       if (s[0] == "-mod") {
         flags.Mod = true
       } else
-      if (s[0] == "-path") {
-        flags.Path = s[1]
+      if (s[0] == "-v") {
+        flags.Version = s[1]
       }
     }
   }
