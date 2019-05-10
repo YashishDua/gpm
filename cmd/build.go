@@ -2,22 +2,20 @@ package cmd
 
 import (
   "fmt"
-  
+
   "gpm/internal"
   "gpm/pkg/logger"
 )
 
-func Build(vendorFlag bool, modFlag bool) {
-  buildScript := getBuildScript(vendorFlag, modFlag)
+func Build(flags internal.Flags) {
+  buildScript := getBuildScript(flags.Vendor, flags.Modules)
   if buildScript == "" {
     logger.PrintStep("Build failed")
-
     return
   }
 
   if scriptErr := internal.ConfigureScript(buildScript).Run(); scriptErr != nil {
     logger.PrintError(scriptErr)
-
     return
   }
   logger.PrintStep("Build successful")
@@ -25,33 +23,45 @@ func Build(vendorFlag bool, modFlag bool) {
 
 func getBuildScript(vendorFlag bool, modFlag bool) string {
   buildScript := `go build`
+  
+  if modFlag {
+    if modExist, _ := internal.CheckFileExist("go.mod"); modExist {
+      dir, dirErr := internal.GetCurrentDir()
+      if dirErr != nil {
+        logger.PrintError(dirErr)
+        return ""
+      }
 
-  // Priority given to modules unless specified
-  if modExist, _ := internal.CheckFileExist("go.mod"); modExist {
-    dir, dirErr := internal.GetCurrentDir()
-    if dirErr != nil {
-      logger.PrintError(dirErr)
-      return ""
-    }
-
-    if insideGoPath := internal.CheckInsideGoPath(dir); insideGoPath { // Inside GOPATH
-      if (modFlag) {
+      if insideGoPath := internal.CheckInsideGoPath(dir); insideGoPath { // Inside GOPATH
         logger.PrintStep("Using modules to build inside GOPATH")
         buildScript = fmt.Sprintf(`GO111MODULE=on %s`, buildScript)
       }
-    } else { // Outside GOPATH
-      if (vendorFlag) {
+
+      return buildScript
+    }
+
+    logger.PrintStep("modules doesn't exist")
+    return ""
+  }
+
+  if vendorFlag {
+    if vendorExist, _ := internal.CheckFileExist("vendor"); vendorExist {
+      dir, dirErr := internal.GetCurrentDir()
+      if dirErr != nil {
+        logger.PrintError(dirErr)
+        return ""
+      }
+
+      if insideGoPath := internal.CheckInsideGoPath(dir); insideGoPath { // Inside GOPATH
         logger.PrintStep("Using vendor to build inside GOPATH")
         buildScript = fmt.Sprintf(`GO111MODULE=on %s -mod=vendor`, buildScript)
       }
+
+      return buildScript
     }
 
-    return buildScript
-  }
-
-  if vendorExist, _ := internal.CheckFileExist("vendor"); vendorExist {
-    logger.PrintStep("Using vendor to build outside GOPATH")
-    return buildScript
+    logger.PrintStep("vendor doesn't exist")
+    return ""
   }
 
   logger.PrintStep("No vendor or modules were present")
