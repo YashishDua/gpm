@@ -1,4 +1,4 @@
-package logger
+package internal
 
 import (
   "fmt"
@@ -11,9 +11,11 @@ func PrintDescribe(text string) {
 }
 
 func PrintStep(text string) {
+  text = fmt.Sprintf(`gpm: %s`, text)
   color.Black(text)
 }
 
 func PrintError(err error) {
-  color.Red(err.Error())
+  text := fmt.Sprintf(`gpm: [ERROR] %s`, err.Error())
+  color.Red(text)
 }

@@ -5,8 +5,8 @@ import (
   "os/exec"
   "bufio"
   "strconv"
-  
-  "gpm/pkg/logger"
+
+  "gpm/internal"
 )
 
 // Array cannot me made constant in Go
@@ -14,14 +14,14 @@ var dirs = []string{"cmd", "internal", "pkg", "scripts", "api", "test"}
 
 func SetupProject() {
   for _, dir := range dirs {
-    logger.PrintStep("Creating " + dir + " directory")
+    internal.PrintStep("Creating " + dir + " directory")
     if err := execSetupScript(dir); err != nil {
-      logger.PrintError(err)
+      internal.PrintError(err)
       return
     }
   }
 
-  logger.PrintStep("Project structure created")
+  internal.PrintStep("Project structure created")
 }
 
 func execSetupScript(dir string) error {

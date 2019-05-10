@@ -2,9 +2,8 @@ package cmd
 
 import (
   "fmt"
-  
+
   "gpm/internal"
-  "gpm/pkg/logger"
 )
 
 func SetupVendor() {
@@ -12,7 +11,7 @@ func SetupVendor() {
 
   dir, dirErr := internal.GetCurrentDir()
   if dirErr != nil {
-    logger.PrintError(dirErr)
+    internal.PrintError(dirErr)
     return
   }
 
@@ -21,9 +20,9 @@ func SetupVendor() {
   }
 
   if scriptErr := internal.ConfigureScript(vendorScript).Run(); scriptErr != nil {
-    logger.PrintError(scriptErr)
+    internal.PrintError(scriptErr)
     return
   }
 
-  logger.PrintStep("Vendor created")
+  internal.PrintStep("Vendor created")
 }

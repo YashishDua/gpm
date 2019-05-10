@@ -4,7 +4,6 @@ import (
   "fmt"
 
   "gpm/internal"
-  "gpm/pkg/logger"
 )
 
 func Init()  {
@@ -14,5 +13,5 @@ func Init()  {
     return
   }
 
-  logger.PrintStep("Initialized")
+  internal.PrintStep("Initialized")
 }

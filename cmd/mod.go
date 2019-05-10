@@ -4,26 +4,25 @@ import (
   "fmt"
   "bufio"
   "os"
-  
+
   "gpm/internal"
-  "gpm/pkg/logger"
 )
 
 func SetupMod() {
   if isFileExist, _ := internal.CheckFileExist("go.mod"); isFileExist {
-    logger.PrintStep("Modules file already exist")
+    internal.PrintStep("Modules file already exist")
     return
   }
 
   reader := bufio.NewReader(os.Stdin)
-  logger.PrintStep("Enter module name: ")
+  internal.PrintStep("Enter module name: ")
   text, _ := reader.ReadString('\n')
   modScript := fmt.Sprintf(`go mod init %s`, text)
 
   // Check if inside GOPATH
   dir, dirErr := internal.GetCurrentDir()
 	if dirErr != nil {
-		logger.PrintError(dirErr)
+		internal.PrintError(dirErr)
     return
 	}
 
@@ -32,6 +31,6 @@ func SetupMod() {
   }
 
   if scriptErr := internal.ConfigureScript(modScript).Run(); scriptErr != nil {
-    logger.PrintError(scriptErr)
+    internal.PrintError(scriptErr)
   }
 }
