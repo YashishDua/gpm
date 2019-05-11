@@ -13,6 +13,8 @@ import (
 var dirs = []string{"cmd", "internal", "pkg", "scripts", "api", "test"}
 
 func SetupProject() {
+  internal.PrintDescribe("Setting up project structure...")
+
   for _, dir := range dirs {
     internal.PrintStep("Creating " + dir + " directory")
     if err := execSetupScript(dir); err != nil {
@@ -21,7 +23,7 @@ func SetupProject() {
     }
   }
 
-  internal.PrintStep("Project structure created")
+  internal.PrintStep("Create successful")
 }
 
 func execSetupScript(dir string) error {

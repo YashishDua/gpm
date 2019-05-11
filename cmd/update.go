@@ -2,22 +2,14 @@ package cmd
 
 import (
   "fmt"
-  "strings"
 
   "gpm/internal"
 )
 
-func UpdateVersion(version string) {
-  if len(version) <= 0 { // Default Version
-    version = "1.12.5"
-  }
+func UpdateVersion(internalFlags internal.Flags) {
+  internal.PrintDescribe("Updating Go version...")
 
-  if strings.Contains(version, "go") {
-    internal.PrintStep("Version cannot contain 'go' keyword")
-    return
-  }
-
-  goBinaryFile := fmt.Sprintf(`go%s.darwin-amd64.tar.gz`, version)
+  goBinaryFile := fmt.Sprintf(`go%s.darwin-amd64.tar.gz`, internalFlags.Version)
   downloadURL := fmt.Sprintf(`https://dl.google.com/go/%s`, goBinaryFile)
   uninstallScript := `sudo rm -rf /usr/local/go`
   extractScript := fmt.Sprintf(`sudo tar -C /usr/local -xzf %s`, goBinaryFile)

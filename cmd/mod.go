@@ -9,6 +9,8 @@ import (
 )
 
 func SetupMod() {
+  internal.PrintDescribe("Creating modules file...")
+  
   if isFileExist, _ := internal.CheckFileExist("go.mod"); isFileExist {
     internal.PrintStep("Modules file already exist")
     return

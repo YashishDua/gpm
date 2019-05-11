@@ -1,9 +1,11 @@
 package cmd
 
 import (
-  "gpm/internal"
   "fmt"
   "errors"
+  "strings"
+
+  "gpm/internal"
 
   "github.com/spf13/cobra"
   "github.com/spf13/pflag"
@@ -23,6 +25,76 @@ func Exec() {
     },
   }
 
+  var initCmd = &cobra.Command{
+    Use:   "init",
+    Short: "Initializes the project",
+    Long:  `Initializes the project`,
+    Run: func(cmd *cobra.Command, args []string) {
+      if isFileExist, _ := internal.CheckFileExist(".gpm"); isFileExist {
+        internal.PrintStep("gpm already initialized")
+      } else {
+        Init()
+      }
+    },
+  }
+
+  var createCmd = &cobra.Command{
+    Use:   "create",
+    Short: "Creates directory structure",
+    Long:  `Create the recommended project directory structure`,
+    Run: func(cmd *cobra.Command, args []string) {
+      if preCheck() {
+        SetupProject()
+      }
+    },
+  }
+
+  var modCmd = &cobra.Command{
+    Use:   "mod",
+    Short: "Creates modules file",
+    Long:  `Creates modules file`,
+    Run: func(cmd *cobra.Command, args []string) {
+      if preCheck() {
+        SetupMod()
+      }
+    },
+  }
+
+  var vendorCmd = &cobra.Command{
+    Use:   "vendor",
+    Short: "Creates vendor using modules",
+    Long:  `Creates vendor using modules`,
+    Run: func(cmd *cobra.Command, args []string) {
+      if preCheck() {
+        SetupVendor()
+      }
+    },
+  }
+
+  var updateCmd = &cobra.Command{
+    Use:   "update",
+    Short: "Updates Go version",
+    Long:  `Updates Go version to a entered version`,
+    PreRunE: func(cmd *cobra.Command, args []string) error {
+      if len(internalFlags.Version) <= 0 { // Default Version
+        internalFlags.Version = "1.12.5"
+      }
+
+      if strings.Contains(internalFlags.Version, "go") {
+        return errors.New("version cannot contain 'go' keyword")
+      }
+
+      return nil
+    },
+    Run: func(cmd *cobra.Command, args []string) {
+      if preCheck() {
+        UpdateVersion(internalFlags)
+      }
+    },
+  }
+
+  updateCmd.Flags().StringVarP(&internalFlags.Version, "version", "v", "", "Version Number")
+
   var buildCmd = &cobra.Command{
     Use:   "build",
     Short: "Build the project",
@@ -40,12 +112,14 @@ func Exec() {
       })
 
       if !flagPresent {
-        return errors.New("Build type required (vendor or modules)")
+        return errors.New("build type required (vendor or modules)")
       }
       return nil
     },
     Run: func(cmd *cobra.Command, args []string) {
-      Build(internalFlags)
+      if preCheck() {
+        Build(internalFlags)
+      }
     },
   }
 
@@ -53,7 +127,12 @@ func Exec() {
   buildCmd.Flags().BoolVarP(&internalFlags.Modules, "modules", "m", false, "Builds project using modules")
 
   rootCmd.AddCommand(versionCmd)
+  rootCmd.AddCommand(initCmd)
   rootCmd.AddCommand(buildCmd)
+  rootCmd.AddCommand(createCmd)
+  rootCmd.AddCommand(updateCmd)
+  rootCmd.AddCommand(modCmd)
+  rootCmd.AddCommand(vendorCmd)
   rootCmd.Execute()
 
   /*isFileExist, _ := internal.CheckFileExist(".gpm")
@@ -102,4 +181,16 @@ func Exec() {
   default:
     internal.PrintStep("No such command. Use help to see all available commands.")
   }*/
+}
+
+func preCheck() bool {
+  isFileExist, _ := internal.CheckFileExist(".gpm")
+
+  if !isFileExist {
+    internal.PrintStep("gpm not initialized")
+    internal.PrintStep("Use <gpm init> to initialize the project")
+    return false
+  }
+
+  return true
 }
