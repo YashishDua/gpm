@@ -5,12 +5,12 @@ import (
   "bufio"
   "os"
 
-  "gpm/internal"
+  "github.com/yashishdua/gpm/internal"
 )
 
 func SetupMod() {
   internal.PrintDescribe("Creating modules file...")
-  
+
   if isFileExist, _ := internal.CheckFileExist("go.mod"); isFileExist {
     internal.PrintStep("Modules file already exist")
     return

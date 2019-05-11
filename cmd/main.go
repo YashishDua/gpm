@@ -5,7 +5,7 @@ import (
   "errors"
   "strings"
 
-  "gpm/internal"
+  "github.com/yashishdua/gpm/internal"
 
   "github.com/spf13/cobra"
   "github.com/spf13/pflag"

@@ -4,7 +4,7 @@ import (
   "fmt"
   "errors"
 
-  "gpm/internal"
+  "github.com/yashishdua/gpm/internal"
 )
 
 func Build(flags internal.Flags) {
@@ -20,7 +20,7 @@ func Build(flags internal.Flags) {
     internal.PrintError(scriptErr)
     return
   }
-  
+
   internal.PrintStep("Build successful")
 }
 

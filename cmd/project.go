@@ -6,7 +6,7 @@ import (
   "bufio"
   "strconv"
 
-  "gpm/internal"
+  "github.com/yashishdua/gpm/internal"
 )
 
 // Array cannot me made constant in Go

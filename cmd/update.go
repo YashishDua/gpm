@@ -3,7 +3,7 @@ package cmd
 import (
   "fmt"
 
-  "gpm/internal"
+  "github.com/yashishdua/gpm/internal"
 )
 
 func UpdateVersion(internalFlags internal.Flags) {

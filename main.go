@@ -1,7 +1,7 @@
 package main
 
 import (
-  cmd "gpm/cmd"
+  cmd "github.com/yashishdua/gpm/cmd"
 )
 
 func main() {
