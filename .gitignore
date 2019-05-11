@@ -4,3 +4,5 @@
 *.prof
 
 gpm
+
+.DS_Store
