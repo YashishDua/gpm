@@ -1,5 +1,7 @@
 # gpm (Go Package Manager)
 
+![Image](gpm.png)
+
 gpm is a tool for managing Go projects.
 
 # Overview
