@@ -7,12 +7,12 @@ import (
 
 func PrintDescribe(text string) {
   text = fmt.Sprintf(`# %s`, text)
-  color.Black(text)
+  fmt.Println(text)
 }
 
 func PrintStep(text string) {
   text = fmt.Sprintf(`gpm: %s`, text)
-  color.Black(text)
+  fmt.Println(text)
 }
 
 func PrintError(err error) {
