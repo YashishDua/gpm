@@ -9,6 +9,11 @@ import (
 func UpdateVersion(internalFlags internal.Flags) {
   internal.PrintDescribe("Updating Go version...")
 
+  if len(internalFlags.Version) <= 0 { // Default Version
+    internal.PrintStep("Using default version 1.12.5")
+    internalFlags.Version = "1.12.5"
+  }
+  
   goBinaryFile := fmt.Sprintf(`go%s.darwin-amd64.tar.gz`, internalFlags.Version)
   downloadURL := fmt.Sprintf(`https://dl.google.com/go/%s`, goBinaryFile)
   uninstallScript := `sudo rm -rf /usr/local/go`

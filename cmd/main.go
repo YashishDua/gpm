@@ -76,11 +76,15 @@ func Exec() {
     Short: "Updates Go version",
     Long:  `Updates Go version to a entered version`,
     PreRunE: func(cmd *cobra.Command, args []string) error {
-      if len(internalFlags.Version) <= 0 { // Default Version
-        internalFlags.Version = "1.12.5"
-      }
+      flags := cmd.Flags()
+      version := ""
+      flags.VisitAll(func(flag *pflag.Flag) {
+        if flag.Shorthand == "v" && flag.Changed {
+          version = flag.Value.String()
+        }
+      })
 
-      if strings.Contains(internalFlags.Version, "go") {
+      if strings.Contains(version, "go") {
         return errors.New("version cannot contain 'go' keyword")
       }
 
