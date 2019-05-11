@@ -31,7 +31,7 @@ func GetCurrentDir() (string, error) {
 
 func CheckInsideGoPath(dir string) bool {
   if strings.Contains(dir, os.Getenv("GOPATH")) {
-    dir = dir[len(os.Getenv("GOPATH")):len(dir)]
+    dir = dir[len(os.Getenv("GOPATH")):]
     if fmt.Sprintf("%c",dir[1]) == "/" {
       return true
     }

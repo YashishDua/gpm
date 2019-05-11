@@ -29,7 +29,11 @@ func SetupProject() {
 func execSetupScript(dir string) error {
   scripts := getScripts(dir)
   script, countScript, keepScript := scripts[0], scripts[1], scripts[2]
-  exec.Command("/bin/sh", "-c", script).Output()
+
+  if _ ,scriptErr := exec.Command("/bin/sh", "-c", script).Output(); scriptErr != nil {
+    return scriptErr
+  }
+
   cmd := exec.Command("/bin/sh", "-c", countScript)
   stdout, err := cmd.StdoutPipe()
   if err != nil {
@@ -45,7 +49,9 @@ func execSetupScript(dir string) error {
   for scanner.Scan() {
     value, _ := strconv.Atoi(scanner.Text())
     if (value == 0) {
-      exec.Command("/bin/sh", "-c", keepScript).Output()
+      if _, scriptErr:= exec.Command("/bin/sh", "-c", keepScript).Output(); scriptErr != nil {
+        return scriptErr
+      }
       return nil
     }
   }

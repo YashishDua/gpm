@@ -133,54 +133,10 @@ func Exec() {
   rootCmd.AddCommand(updateCmd)
   rootCmd.AddCommand(modCmd)
   rootCmd.AddCommand(vendorCmd)
-  rootCmd.Execute()
 
-  /*isFileExist, _ := internal.CheckFileExist(".gpm")
-  command := args[1]
-
-  if command == "init" {
-    if isFileExist {
-      internal.PrintStep("gpm already initialized")
-    } else {
-      internal.PrintDescribe("Initializing gpm...")
-      Init()
-    }
-    return
+  if err := rootCmd.Execute(); err != nil {
+    internal.PrintError(err)
   }
-
-  if command == "help" {
-    internal.PrintDescribe("Print about all commands...")
-    Help()
-    return
-  }
-
-  // For any other Command, .goboil must be present
-  if !isFileExist {
-    internal.PrintStep("gpm not initialized")
-    internal.PrintStep("Use <gpm init> to initialize the project")
-    return
-  }
-
-  switch command {
-  case "create":
-    internal.PrintDescribe("Setting up project structure...")
-    SetupProject()
-
-  case "mod":
-    internal.PrintDescribe("Creating modules file...")
-    SetupMod()
-
-  case "vendor":
-    internal.PrintDescribe("Creating vendor...")
-    SetupVendor()
-
-  case "update":
-    internal.PrintDescribe("Updating Go version...")
-    UpdateVersion(flags.Version)
-
-  default:
-    internal.PrintStep("No such command. Use help to see all available commands.")
-  }*/
 }
 
 func preCheck() bool {
