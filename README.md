@@ -1,15 +1,15 @@
 # gpm (Go Package Manager)
 
-gpm provides support to existing Go commands to accomplish project tasks.
+gpm is a tool for managing Go projects.
 
 # Overview
 
 gpm provides commands:
-* To create boilerplate project directory
-* To create module inside/outside GOPATH
+* [To create boilerplate project directory](##create)
+* [To build project either using vendor or modules (inside/outside GOPATH)](##build)
 * To update Go version
-* To build project either using vendor or modules
 * To generate vendor folder
+* To add module support (inside/outside GOPATH)
 
 # Commands
 
@@ -74,6 +74,19 @@ $ gpm build -m
 - To build using vendor
 ```bash
 $ gpm build -v
+```
+
+## Update
+This commands updates Go version to specified version. If version not specified, uses default 1.12.5.
+
+```bash
+$ gpm update -v=1.12.1
+
+# Updating Go version...
+gpm: Uninstalling previous version
+gpm: Download go1.12.5.darwin-amd64.tar.gz binary
+gpm: Extracting Go archive
+gpm: Go updated successfuly
 ```
 
 ## Vendor
