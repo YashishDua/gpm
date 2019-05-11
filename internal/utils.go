@@ -76,7 +76,7 @@ func DownloadFile(filepath string, url string) error {
   if createErr != nil  {
     return createErr
   }
-  fmt.Println("CREATED")
+
   defer out.Close()
 
   // Get the data
@@ -84,7 +84,7 @@ func DownloadFile(filepath string, url string) error {
   if httpErr != nil {
     return httpErr
   }
-  fmt.Println("HTTP")
+
   defer resp.Body.Close()
 
   // Check server response
@@ -92,7 +92,6 @@ func DownloadFile(filepath string, url string) error {
     return fmt.Errorf("Bad status from golang.org: %s", resp.Status)
   }
 
-  fmt.Println("COPYING")
   // Writer the body to file
   _, err := io.Copy(out, resp.Body)
   if err != nil  {
