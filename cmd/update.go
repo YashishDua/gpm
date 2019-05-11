@@ -13,7 +13,7 @@ func UpdateVersion(internalFlags internal.Flags) {
     internal.PrintStep("Using default version 1.12.5")
     internalFlags.Version = "1.12.5"
   }
-  
+
   goBinaryFile := fmt.Sprintf(`go%s.darwin-amd64.tar.gz`, internalFlags.Version)
   downloadURL := fmt.Sprintf(`https://dl.google.com/go/%s`, goBinaryFile)
   uninstallScript := `sudo rm -rf /usr/local/go`
@@ -26,7 +26,7 @@ func UpdateVersion(internalFlags internal.Flags) {
     return
   }
 
-  internal.PrintStep("Downloading latest Go binary")
+  internal.PrintStep(fmt.Sprintf(`Downloading %s binary`, goBinaryFile))
   if fileExist, _ := internal.CheckFileExist(goBinaryFile); fileExist {
     internal.PrintStep("Go binary file already exist")
   } else {
