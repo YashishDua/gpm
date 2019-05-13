@@ -1,4 +1,4 @@
-# gpm (Go Package Manager)
+# gpm (Go Project Manager)
 
 ![Image](gpm.png)
 
@@ -18,7 +18,7 @@ gpm provides commands:
 ## Help
 
 ```bash
-$ gpm 
+$ gpm
 
 Usage:
 gpm [command]
@@ -109,7 +109,7 @@ This commands help to create a module file support. It takes care of whether the
 $ gpm mod
 
 # Creating modules file...
-gpm: Enter module name: 
+gpm: Enter module name:
 github.com/yashishdua/gpm
 go: creating new go.mod: module github.com/yashishdua/gpm
 ```

@@ -21,7 +21,7 @@ func Exec() {
     Short: "Print the version number of gpm",
     Long:  `All software has versions. This is gpm's`,
     Run: func(cmd *cobra.Command, args []string) {
-      fmt.Println("gpm - Go Package Manager v0.0.1")
+      fmt.Println("gpm - Go Project Manager v0.0.1")
     },
   }
 
