@@ -3,6 +3,7 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os/exec"
 	"strconv"
 
@@ -18,6 +19,14 @@ func SetupProject() {
 	for _, dir := range dirs {
 		internal.PrintStep("Creating " + dir + " directory")
 		if err := execSetupScript(dir); err != nil {
+			internal.PrintError(err)
+			return
+		}
+	}
+
+	if goFileExist, _ := internal.CheckFileExist("main.go"); !goFileExist {
+		internal.PrintStep("Adding empty main.go")
+		if err := addEmptyGoFile(); err != nil {
 			internal.PrintError(err)
 			return
 		}
@@ -68,4 +77,14 @@ func getScripts(dir string) []string {
 	countScript := fmt.Sprintf(`cd %s && ls | wc -l`, dir)
 	keepScript := fmt.Sprintf(`cd %s && touch .keep`, dir)
 	return []string{script, countScript, keepScript}
+}
+
+func addEmptyGoFile() error {
+	data := []byte("package main\n\nfunc main() {}")
+
+	if err := ioutil.WriteFile("main.go", data, 0777); err != nil {
+		return err
+	}
+
+	return nil
 }
