@@ -62,6 +62,7 @@ gpm: Creating pkg directory
 gpm: Creating scripts directory
 gpm: Creating api directory
 gpm: Creating test directory
+gpm: Adding empty main.go
 gpm: Create successful
 ```
 
