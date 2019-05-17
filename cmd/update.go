@@ -1,53 +1,53 @@
 package cmd
 
 import (
-  "fmt"
+	"fmt"
 
-  "github.com/yashishdua/gpm/internal"
+	"github.com/yashishdua/gpm/internal"
 )
 
 func UpdateVersion(internalFlags internal.Flags) {
-  internal.PrintDescribe("Updating Go version...")
+	internal.PrintDescribe("Updating Go version...")
 
-  if len(internalFlags.Version) <= 0 { // Default Version
-    internal.PrintStep("Using default version 1.12.5")
-    internalFlags.Version = "1.12.5"
-  }
+	if len(internalFlags.Version) <= 0 { // Default Version
+		internal.PrintStep("Using default version 1.12.5")
+		internalFlags.Version = "1.12.5"
+	}
 
-  goBinaryFile := fmt.Sprintf(`go%s.darwin-amd64.tar.gz`, internalFlags.Version)
-  downloadURL := fmt.Sprintf(`https://dl.google.com/go/%s`, goBinaryFile)
-  uninstallScript := `sudo rm -rf /usr/local/go`
-  extractScript := fmt.Sprintf(`sudo tar -C /usr/local -xzf %s`, goBinaryFile)
-  removeBinaryScript := fmt.Sprintf(`sudo rm %s`, goBinaryFile)
+	goBinaryFile := fmt.Sprintf(`go%s.darwin-amd64.tar.gz`, internalFlags.Version)
+	downloadURL := fmt.Sprintf(`https://dl.google.com/go/%s`, goBinaryFile)
+	uninstallScript := `sudo rm -rf /usr/local/go`
+	extractScript := fmt.Sprintf(`sudo tar -C /usr/local -xzf %s`, goBinaryFile)
+	removeBinaryScript := fmt.Sprintf(`sudo rm %s`, goBinaryFile)
 
-  internal.PrintStep("Uninstalling previous version")
-  if scriptErr := internal.ConfigureScript(uninstallScript).Run(); scriptErr != nil {
-    internal.PrintError(scriptErr)
-    return
-  }
+	internal.PrintStep("Uninstalling previous version")
+	if scriptErr := internal.ConfigureScript(uninstallScript).Run(); scriptErr != nil {
+		internal.PrintError(scriptErr)
+		return
+	}
 
-  internal.PrintStep(fmt.Sprintf(`Downloading %s binary`, goBinaryFile))
-  if fileExist, _ := internal.CheckFileExist(goBinaryFile); fileExist {
-    internal.PrintStep("Go binary file already exist")
-  } else {
-    downloadErr := internal.DownloadFile(goBinaryFile, downloadURL)
-    if downloadErr != nil {
-      internal.PrintError(downloadErr)
-      internal.PrintStep("Go Server error or Check version entered once")
-      return
-    }
-  }
+	internal.PrintStep(fmt.Sprintf(`Downloading %s binary`, goBinaryFile))
+	if fileExist, _ := internal.CheckFileExist(goBinaryFile); fileExist {
+		internal.PrintStep("Go binary file already exist")
+	} else {
+		downloadErr := internal.DownloadFile(goBinaryFile, downloadURL)
+		if downloadErr != nil {
+			internal.PrintError(downloadErr)
+			internal.PrintStep("Go Server error or Check version entered once")
+			return
+		}
+	}
 
-  internal.PrintStep("Extracting Go archive")
-  if scriptErr := internal.ConfigureScript(extractScript).Run(); scriptErr != nil {
-    internal.PrintError(scriptErr)
-    return
-  }
+	internal.PrintStep("Extracting Go archive")
+	if scriptErr := internal.ConfigureScript(extractScript).Run(); scriptErr != nil {
+		internal.PrintError(scriptErr)
+		return
+	}
 
-  if scriptErr := internal.ConfigureScript(removeBinaryScript).Run(); scriptErr != nil {
-    internal.PrintError(scriptErr)
-    return
-  }
+	if scriptErr := internal.ConfigureScript(removeBinaryScript).Run(); scriptErr != nil {
+		internal.PrintError(scriptErr)
+		return
+	}
 
-  internal.PrintStep("Go updated successfuly")
+	internal.PrintStep("Go updated successfuly")
 }
