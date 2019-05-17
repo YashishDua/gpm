@@ -17,6 +17,12 @@ gpm provides commands:
 
 ![Gif](/static/gpm.gif)
 
+# Setup
+
+```bash
+go get github.com/yashishdua/gpm
+```
+
 # Commands
 
 ## Help
