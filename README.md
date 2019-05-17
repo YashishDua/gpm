@@ -1,6 +1,6 @@
 # gpm (Go Project Manager)
 
-![Image](gpm.png)
+![Image](/static/gpm.png)
 
 gpm is a tool for managing Go projects.
 
