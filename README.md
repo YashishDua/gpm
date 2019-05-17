@@ -9,9 +9,13 @@ gpm is a tool for managing Go projects.
 gpm provides commands:
 * [To create boilerplate project directory](#create)
 * [To build project either using vendor or modules (inside/outside GOPATH)](#build)
-* [To update Go version](#version)
+* [To update Go version](#build)
 * [To add vendor support using modules](#vendor)
 * [To add module support (inside/outside GOPATH)](#modules)
+
+# Preview - Update Go Easily ;)
+
+![Gif](/static/gpm.gif)
 
 # Commands
 
