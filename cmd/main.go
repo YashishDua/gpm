@@ -91,9 +91,7 @@ func Exec() {
 			return nil
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			if preCheck() {
-				UpdateVersion(internalFlags)
-			}
+			UpdateVersion(internalFlags)
 		},
 	}
 
